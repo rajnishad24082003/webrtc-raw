@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>signIn/signUp</title>
+  </head>
+  <body>
+    <form id="form">
+      <label for="email">email </label>
+      <input id="email" type="text" name="email" />
+      <label for="password">password</label>
+      <input id="password" type="text" name="password" />
+      <button id="signIn">signIn</button>
+      <button id="signUp">signUp</button>
+    </form>
+    <script>
+      let email = document.getElementById("email");
+      let password = document.getElementById("password");
+      document.getElementById("signIn").addEventListener("click", async (e) => {
+        e.preventDefault();
+        let res = await fetch("/signin", {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email.value,
+            password: password.value,
+          }),
+        });
+        res = await res.json();
+        if (res.msg === "user verified")
+          localStorage.setItem("token", res.token);
+        else alert("res.msg");
+        console.log(res);
+      });
+
+      document.getElementById("signUp").addEventListener("click", async (e) => {
+        e.preventDefault();
+        let res = await fetch("/signup", {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email.value,
+            password: password.value,
+          }),
+        });
+        res = await res.json();
+        console.log(res, "from sign.ejs 47");
+      });
+    </script>
+  </body>
+</html>
